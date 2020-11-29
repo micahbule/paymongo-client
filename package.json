@@ -12,6 +12,14 @@
   ],
   "author": "Micah Andrew Bule",
   "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/micahbule/paymongo-client.git"
+  },
+  "bugs": {
+    "url" : "https://github.com/micahbule/paymongo-client",
+    "email" : "micah.bule@gmail.com"
+  },
   "dependencies": {
     "superagent": "^6.1.0"
   },
