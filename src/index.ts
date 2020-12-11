@@ -2,6 +2,7 @@ import request from 'superagent'
 import { createHmac } from 'crypto'
 import { SourceTypes } from './source_types'
 import { Modes } from './modes'
+import { PaymentIntentAttributes } from './interfaces/paymentIntent';
 
 export default class Paymongo {
     private publicKey: string
@@ -47,9 +48,15 @@ export default class Paymongo {
 
     sendRequest = (url: string, method: string = 'GET') => request(method, `${this.baseUrl}${url}`)
 
-    createPaymentIntent = async (amount: number) => {
+    createPaymentIntent = async (attributes: PaymentIntentAttributes) => {
+        const { amount, ...rest } = attributes;
+
+        console.log('Woah', amount);
+
 		const payload = this.constructPayload({
-			amount: amount * 100,
+            ...rest,
+            amount: amount * 100,
+            /** Override values for now until API updates */
 			payment_method_allowed: ['card'],
 			currency: 'PHP',
         })
