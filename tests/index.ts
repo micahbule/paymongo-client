@@ -17,7 +17,7 @@ describe('Client', () => {
             let result: Response
 
             before(async () => {
-                result = await client.createPaymentIntent(100)
+                result = await client.createPaymentIntent({ amount: 100 })
             })
 
             it('with correct resource type', () => {

@@ -51,8 +51,6 @@ export default class Paymongo {
     createPaymentIntent = async (attributes: PaymentIntentAttributes) => {
         const { amount, ...rest } = attributes;
 
-        console.log('Woah', amount);
-
 		const payload = this.constructPayload({
             ...rest,
             amount: amount * 100,
