@@ -24,3 +24,8 @@ export interface PaymentIntentAttributes {
     currency?: string,
     metadata?: object
 }
+
+export interface AttachPaymentIntentPayloadAttributes {
+    payment_method: string,
+    return_url?: string,
+}

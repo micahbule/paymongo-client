@@ -2,7 +2,7 @@ import request from 'superagent'
 import { createHmac } from 'crypto'
 import { SourceTypes } from './source_types'
 import { Modes } from './modes'
-import { PaymentIntentAttributes } from './interfaces/paymentIntent';
+import { PaymentIntentAttributes, AttachPaymentIntentPayloadAttributes } from './interfaces/paymentIntent';
 
 export default class Paymongo {
     private publicKey: string
@@ -94,5 +94,21 @@ export default class Paymongo {
         const result = await this.sendRequest('/payments', 'POST').set(this.getHeaders()).send(payload)
         
 		return result
+    }
+
+    attachPaymentIntent = async ({ intentId, methodId, usedPublicKey = false, redirect, }: { intentId: string, methodId: string, usedPublicKey?: boolean, redirect?: string }) => {
+        const payloadData: AttachPaymentIntentPayloadAttributes = {
+            payment_method: methodId,
+        }
+
+        if (usedPublicKey) {
+            payloadData.return_url = redirect
+        }
+
+        const payload = this.constructPayload(payloadData)
+
+        const result = await this.sendRequest(`/payment_intents/${intentId}/attach`, 'POST').set(this.getHeaders()).send(payload)
+
+        return result
     }
 }

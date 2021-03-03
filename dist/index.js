@@ -81,7 +81,6 @@ var Paymongo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         amount = attributes.amount, rest = __rest(attributes, ["amount"]);
-                        console.log('Woah', amount);
                         payload = this.constructPayload(__assign(__assign({}, rest), { amount: amount * 100, 
                             /** Override values for now until API updates */
                             payment_method_allowed: ['card'], currency: 'PHP' }));
@@ -134,6 +133,28 @@ var Paymongo = /** @class */ (function () {
                 }
             });
         }); };
+        this.attachPaymentIntent = function (_a) {
+            var intentId = _a.intentId, methodId = _a.methodId, _b = _a.usedPublicKey, usedPublicKey = _b === void 0 ? false : _b, redirect = _a.redirect;
+            return __awaiter(_this, void 0, void 0, function () {
+                var payloadData, payload, result;
+                return __generator(this, function (_c) {
+                    switch (_c.label) {
+                        case 0:
+                            payloadData = {
+                                payment_method: methodId,
+                            };
+                            if (usedPublicKey) {
+                                payloadData.return_url = redirect;
+                            }
+                            payload = this.constructPayload(payloadData);
+                            return [4 /*yield*/, this.sendRequest("/payment_intents/" + intentId + "/attach", 'POST').set(this.getHeaders()).send(payload)];
+                        case 1:
+                            result = _c.sent();
+                            return [2 /*return*/, result];
+                    }
+                });
+            });
+        };
         this.publicKey = publicKey;
         this.secretKey = secretKey;
     }
