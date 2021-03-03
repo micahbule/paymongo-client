@@ -63,4 +63,19 @@ describe('Client', () => {
     describe('verifyWebhook', () => {
         it('should succeed')
     })
+
+    describe('retrievePaymentIntent', () => {
+        describe('should success', async () => {
+            let result: Response
+            const PAYMENT_INTENT_ID = 'pi_cYJScekCfnLfuzsvneHwE5St'
+
+            before(async () => {
+                result = await client.retrievePaymentIntent(PAYMENT_INTENT_ID)
+            })
+
+            it.only ('with correct response', () => {
+                expect(result.body).to.deep.nested.property('data.id', PAYMENT_INTENT_ID)
+            })
+        })
+    })
 })

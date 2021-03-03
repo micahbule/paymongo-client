@@ -155,6 +155,11 @@ var Paymongo = /** @class */ (function () {
                 });
             });
         };
+        this.retrievePaymentIntent = function (intentId) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.sendRequest("/payment_intents/" + intentId).set(this.getHeaders()).send()];
+            });
+        }); };
         this.publicKey = publicKey;
         this.secretKey = secretKey;
     }

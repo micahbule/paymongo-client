@@ -111,4 +111,8 @@ export default class Paymongo {
 
         return result
     }
+
+    retrievePaymentIntent = async (intentId: string) => {
+        return this.sendRequest(`/payment_intents/${intentId}`).set(this.getHeaders()).send()
+    }
 }
