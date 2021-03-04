@@ -91,20 +91,13 @@ var Paymongo = /** @class */ (function () {
                 }
             });
         }); };
-        this.createSource = function (amount, type, redirectSuccess, redirectFail) { return __awaiter(_this, void 0, void 0, function () {
-            var payload, result;
+        this.createSource = function (attributes) { return __awaiter(_this, void 0, void 0, function () {
+            var amount, payload, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        payload = this.constructPayload({
-                            type: type,
-                            amount: amount * 100,
-                            currency: 'PHP',
-                            redirect: {
-                                success: redirectSuccess,
-                                failed: redirectFail,
-                            },
-                        });
+                        amount = attributes.amount;
+                        payload = this.constructPayload(__assign(__assign({}, attributes), { amount: amount * 100, currency: 'PHP' }));
                         return [4 /*yield*/, this.sendRequest('/sources', 'POST').set(this.getHeaders()).send(payload)];
                     case 1:
                         result = _a.sent();
@@ -149,7 +142,6 @@ var Paymongo = /** @class */ (function () {
                             if (typeof clientKey !== 'undefined') {
                                 payloadData.client_key = clientKey;
                             }
-                            console.log('payloadData', payloadData);
                             payload = this.constructPayload(payloadData);
                             return [4 /*yield*/, this.sendRequest("/payment_intents/" + intentId + "/attach", 'POST').set(this.getHeaders()).send(payload)];
                         case 1:
