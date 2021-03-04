@@ -3,6 +3,7 @@ import { createHmac } from 'crypto'
 import { Modes } from './modes'
 import { PaymentIntentAttributes, AttachPaymentIntentPayloadAttributes } from './interfaces/paymentIntent';
 import { SourceAttributes } from './interfaces/source';
+import { PaymentAttributes } from './interfaces/payment';
 
 export default class Paymongo {
     private publicKey: string
@@ -78,15 +79,10 @@ export default class Paymongo {
 		return result
     }
 
-    createPayment = async (amount: number, sourceId: string, description: string) => {
+    createPayment = async (attributes: PaymentAttributes) => {
         const payload = this.constructPayload({
-			amount,
-			description,
+            ...attributes,
 			currency: 'PHP',
-			source: {
-				id: sourceId,
-				type: 'source',
-			},
         })
 
         const result = await this.sendRequest('/payments', 'POST').set(this.getHeaders()).send(payload)

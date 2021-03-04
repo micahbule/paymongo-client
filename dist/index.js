@@ -105,20 +105,12 @@ var Paymongo = /** @class */ (function () {
                 }
             });
         }); };
-        this.createPayment = function (amount, sourceId, description) { return __awaiter(_this, void 0, void 0, function () {
+        this.createPayment = function (attributes) { return __awaiter(_this, void 0, void 0, function () {
             var payload, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        payload = this.constructPayload({
-                            amount: amount,
-                            description: description,
-                            currency: 'PHP',
-                            source: {
-                                id: sourceId,
-                                type: 'source',
-                            },
-                        });
+                        payload = this.constructPayload(__assign(__assign({}, attributes), { currency: 'PHP' }));
                         return [4 /*yield*/, this.sendRequest('/payments', 'POST').set(this.getHeaders()).send(payload)];
                     case 1:
                         result = _a.sent();
