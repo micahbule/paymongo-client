@@ -28,4 +28,5 @@ export interface PaymentIntentAttributes {
 export interface AttachPaymentIntentPayloadAttributes {
     payment_method: string,
     return_url?: string,
+    client_key?: string,
 }

@@ -134,22 +134,26 @@ var Paymongo = /** @class */ (function () {
             });
         }); };
         this.attachPaymentIntent = function (_a) {
-            var intentId = _a.intentId, methodId = _a.methodId, _b = _a.usedPublicKey, usedPublicKey = _b === void 0 ? false : _b, redirect = _a.redirect;
+            var intentId = _a.intentId, methodId = _a.methodId, redirect = _a.redirect, clientKey = _a.clientKey;
             return __awaiter(_this, void 0, void 0, function () {
                 var payloadData, payload, result;
-                return __generator(this, function (_c) {
-                    switch (_c.label) {
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
                         case 0:
                             payloadData = {
                                 payment_method: methodId,
                             };
-                            if (usedPublicKey) {
+                            if (typeof redirect !== 'undefined') {
                                 payloadData.return_url = redirect;
                             }
+                            if (typeof clientKey !== 'undefined') {
+                                payloadData.client_key = clientKey;
+                            }
+                            console.log('payloadData', payloadData);
                             payload = this.constructPayload(payloadData);
                             return [4 /*yield*/, this.sendRequest("/payment_intents/" + intentId + "/attach", 'POST').set(this.getHeaders()).send(payload)];
                         case 1:
-                            result = _c.sent();
+                            result = _b.sent();
                             return [2 /*return*/, result];
                     }
                 });

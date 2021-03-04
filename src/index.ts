@@ -96,13 +96,27 @@ export default class Paymongo {
 		return result
     }
 
-    attachPaymentIntent = async ({ intentId, methodId, usedPublicKey = false, redirect, }: { intentId: string, methodId: string, usedPublicKey?: boolean, redirect?: string }) => {
+    attachPaymentIntent = async ({
+        intentId,
+        methodId,
+        redirect,
+        clientKey,
+    }: {
+        intentId: string,
+        methodId: string,
+        redirect?: string,
+        clientKey?: string,
+    }) => {
         const payloadData: AttachPaymentIntentPayloadAttributes = {
             payment_method: methodId,
         }
 
-        if (usedPublicKey) {
+        if (typeof redirect !== 'undefined') {
             payloadData.return_url = redirect
+        }
+
+        if (typeof clientKey !== 'undefined') {
+            payloadData.client_key = clientKey;
         }
 
         const payload = this.constructPayload(payloadData)
