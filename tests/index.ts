@@ -2,7 +2,7 @@ import Paymongo from '../src'
 import { expect } from 'chai'
 import { Response } from 'superagent'
 import { PUBLIC_KEY, SECRET_KEY } from './keys'
-import { SourceTypes } from '../src/source_types'
+import { SourceTypes } from '../src/interfaces/source'
 import 'mocha'
 
 describe('Client', () => {
@@ -35,12 +35,14 @@ describe('Client', () => {
             let result: Response
 
             before(async () => {
-                result = await client.createSource(
-                    100,
-                    SourceTypes.Gcash,
-                    'http://localhost:3000/success',
-                    'http://localhost:3000/fail'
-                )
+                result = await client.createSource({
+                    amount: 100,
+                    type: SourceTypes.GCash,
+                    redirect: {
+                        success: 'http://localhost:3000/success',
+                        failed: 'http://localhost:3000/fail',
+                    }
+                })
             })
 
             it ('with correct resource type', () => {
@@ -73,7 +75,7 @@ describe('Client', () => {
                 result = await client.retrievePaymentIntent(PAYMENT_INTENT_ID)
             })
 
-            it.only ('with correct response', () => {
+            it ('with correct response', () => {
                 expect(result.body).to.deep.nested.property('data.id', PAYMENT_INTENT_ID)
             })
         })

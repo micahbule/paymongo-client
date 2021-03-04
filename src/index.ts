@@ -1,8 +1,8 @@
 import request from 'superagent'
 import { createHmac } from 'crypto'
-import { SourceTypes } from './source_types'
 import { Modes } from './modes'
 import { PaymentIntentAttributes, AttachPaymentIntentPayloadAttributes } from './interfaces/paymentIntent';
+import { SourceAttributes } from './interfaces/source';
 
 export default class Paymongo {
     private publicKey: string
@@ -64,15 +64,13 @@ export default class Paymongo {
 		return result
     }
 
-    createSource = async (amount: number, type: SourceTypes, redirectSuccess: string, redirectFail: string) => {
+    createSource = async (attributes: SourceAttributes) => {
+        const { amount } = attributes;
+
         const payload = this.constructPayload({
-			type,
+            ...attributes,
 			amount: amount * 100,
 			currency: 'PHP',
-			redirect: {
-				success: redirectSuccess,
-				failed: redirectFail,
-			},
         })
         
         const result = await this.sendRequest('/sources', 'POST').set(this.getHeaders()).send(payload)
