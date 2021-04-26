@@ -81,7 +81,18 @@ var Paymongo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         amount = attributes.amount, rest = __rest(attributes, ["amount"]);
-                        payload = this.constructPayload(__assign(__assign({}, rest), { amount: amount * 100, 
+                        payload = this.constructPayload(__assign(__assign({}, rest), { 
+                            /**
+                             * This assumes amount is either whole integer or a
+                             * 2-decimal floating point number
+                             *
+                             * Truncate trailing zeroes to get whole integer equivalent
+                             * of the amount
+                             *
+                             * Check JS weirdness here
+                             * https://stackoverflow.com/questions/1458633/how-to-deal-with-floating-point-number-precision-in-javascript
+                             */
+                            amount: Math.trunc(amount * 100), 
                             /** Override values for now until API updates */
                             payment_method_allowed: ['card'], currency: 'PHP' }));
                         return [4 /*yield*/, this.sendRequest('/payment_intents', 'POST').set(this.getHeaders()).send(payload)];
@@ -97,7 +108,18 @@ var Paymongo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         amount = attributes.amount;
-                        payload = this.constructPayload(__assign(__assign({}, attributes), { amount: amount * 100, currency: 'PHP' }));
+                        payload = this.constructPayload(__assign(__assign({}, attributes), { 
+                            /**
+                             * This assumes amount is either whole integer or a
+                             * 2-decimal floating point number
+                             *
+                             * Truncate trailing zeroes to get whole integer equivalent
+                             * of the amount
+                             *
+                             * Check JS weirdness here
+                             * https://stackoverflow.com/questions/1458633/how-to-deal-with-floating-point-number-precision-in-javascript
+                             */
+                            amount: Math.trunc(amount * 100), currency: 'PHP' }));
                         return [4 /*yield*/, this.sendRequest('/sources', 'POST').set(this.getHeaders()).send(payload)];
                     case 1:
                         result = _a.sent();
