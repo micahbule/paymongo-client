@@ -54,7 +54,17 @@ export default class Paymongo {
 
 		const payload = this.constructPayload({
             ...rest,
-            amount: amount * 100,
+            /**
+             * This assumes amount is either whole integer or a
+             * 2-decimal floating point number
+             * 
+             * Truncate trailing zeroes to get whole integer equivalent
+             * of the amount
+             * 
+             * Check JS weirdness here
+             * https://stackoverflow.com/questions/1458633/how-to-deal-with-floating-point-number-precision-in-javascript
+             */
+            amount: Math.trunc(amount * 100),
             /** Override values for now until API updates */
 			payment_method_allowed: ['card'],
 			currency: 'PHP',
@@ -70,7 +80,17 @@ export default class Paymongo {
 
         const payload = this.constructPayload({
             ...attributes,
-			amount: amount * 100,
+			/**
+             * This assumes amount is either whole integer or a
+             * 2-decimal floating point number
+             * 
+             * Truncate trailing zeroes to get whole integer equivalent
+             * of the amount
+             * 
+             * Check JS weirdness here
+             * https://stackoverflow.com/questions/1458633/how-to-deal-with-floating-point-number-precision-in-javascript
+             */
+            amount: Math.trunc(amount * 100),
 			currency: 'PHP',
         })
         

@@ -13,7 +13,7 @@ describe('Client', () => {
     })
 
     describe('createPaymentIntent', () => {
-        describe('should succeed', () => {
+        describe('should succeed with integer amount', () => {
             let result: Response
 
             before(async () => {
@@ -26,6 +26,22 @@ describe('Client', () => {
             
             it ('with correct amount', () => {
                 expect(result.body).to.deep.nested.property('data.attributes.amount', 10000)
+            })
+        })
+
+        describe('should succeed with float amount', () => {
+            let result: Response
+
+            before(async () => {
+                result = await client.createPaymentIntent({ amount: 326.79 })
+            })
+
+            it('with correct resource type', () => {
+                expect(result.body).to.deep.nested.property('data.type', 'payment_intent')
+            })
+            
+            it ('with correct amount', () => {
+                expect(result.body).to.deep.nested.property('data.attributes.amount', 32679)
             })
         })
     })
